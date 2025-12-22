@@ -45,9 +45,21 @@ export function getUserById(id: string) {
     return currentUserBypassUsers.find((c) => c.id === id);
 }
 
-export function addUser(user: User) {
+function generateUniqueId(): string {
+    // Genera un ID único usando timestamp + random
+    return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+}
+
+export function addUser(user: Omit<User, "id">) {
     if (bypassLen() >= settings.store.maxList) return;
-    currentUserBypassUsers.push(user);
+
+    const newUser: User = {
+        ...user,
+        id: generateUniqueId(),
+    };
+
+    currentUserBypassUsers.push(newUser);
+    return newUser.id;
 }
 
 export function removeUser(channelId: string) {
