@@ -19,6 +19,8 @@ Based on [Vencord](https://github.com/Vendicated/Vencord), which is also GPL-3.0
 - [ ] Custom notifications
 - [x] DND check
 - [ ] Translate texts based on Discord's language settings.
+- [ ] When you are in a channel and this person sends you a message, it won't sound.
+- [ ] Clicking the notification redirects you to the channel.
 
 ## Installation
 
