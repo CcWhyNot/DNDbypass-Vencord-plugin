@@ -31,10 +31,8 @@ function createNotificationMenuItem(channelId: string, name: string) {
                     <Menu.MenuSeparator />
                 </>
             )}
-            <Menu.MenuItem id="notification-bypass-list" label="List" action={() => openBypassModal()}></Menu.MenuItem>
             {bypass && (
                 <>
-                    <Menu.MenuSeparator />
                     <Menu.MenuItem
                         id="notification-bypass-remove"
                         label="Remove"
