@@ -73,17 +73,35 @@ const plugin = definePlugin({
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
 
-                    showNotification({
-                        title: `Mensaje de ${message.author.username}`,
-                        body: cleanContent || "(sin contenido)",
-                        icon: message.author.avatar
-                            ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`
-                            : undefined,
-                        onClick: () => {
-                            // Opcional: ir al canal
-                            console.log("Notificación clickeada");
-                        },
-                    });
+                    // Reproducir sonido de Discord siempre
+                    const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
+                    audio.volume = 0.5;
+                    audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
+
+                    // Solo mostrar notificación visual si Discord NO tiene el foco
+                    if (!document.hasFocus()) {
+                        if (Notification.permission === "granted") {
+                            const n = new Notification(`Mensaje de ${message.author.username}`, {
+                                body: cleanContent || "(sin contenido)",
+                                silent: true,
+                            });
+                            n.onclick = () => {
+                                console.log("Notificación clickeada");
+                            };
+                        } else if (Notification.permission !== "denied") {
+                            Notification.requestPermission().then((permission) => {
+                                if (permission === "granted") {
+                                    const n = new Notification(`Mensaje de ${message.author.username}`, {
+                                        body: cleanContent || "(sin contenido)",
+                                        silent: true,
+                                    });
+                                    n.onclick = () => {
+                                        console.log("Notificación clickeada");
+                                    };
+                                }
+                            });
+                        }
+                    }
                 }
             } catch (error) {
                 console.error("Error:", error);
