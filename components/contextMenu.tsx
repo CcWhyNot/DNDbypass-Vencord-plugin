@@ -15,8 +15,7 @@ function createNotificationMenuItem(channelId: string, name: string) {
     const bypass = isBypass(channelId);
 
     const handleAdd = () => {
-        const user: User = { id: "usuario-" + bypassLen(), channel: channelId, name: name, activated: true };
-        addUser(user);
+        addUser({ channel: channelId, name: name, activated: true });
     };
 
     const handleRemove = () => {
