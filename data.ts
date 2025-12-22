@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import { settings } from "userplugins/customNotifications";
-import { UserStore } from "@webpack/common";
+import { UserStore, PresenceStore } from "@webpack/common";
 
 export interface User {
     id: string;
@@ -24,6 +24,11 @@ export async function init() {
 
 export function shouldNotifyMessage(message: any, channelId: string) {
     const currentUser = UserStore.getCurrentUser();
+    if (!currentUser) return false;
+
+    // Comprobación de DND
+    const status = PresenceStore.getStatus(currentUser?.id);
+    if (status !== "dnd") return false;
 
     // No notificar si es tu propio mensaje
     if (message.author?.id === currentUser?.id) return false;
