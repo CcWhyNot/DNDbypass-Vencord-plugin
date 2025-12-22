@@ -23,6 +23,7 @@ import { requireSettingsMenu } from "./components/CreateListModal";
 import { openBypassModal } from "./components/CreateListModal";
 import { cleanMessage } from "./sanitize";
 import { showNotification } from "@api/Notifications";
+import { UserStore } from "@webpack/common";
 
 export const settings = definePluginSettings({
     maxList: {
@@ -73,17 +74,28 @@ const plugin = definePlugin({
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
 
-                    showNotification({
-                        title: `Mensaje de ${message.author.username}`,
-                        body: cleanContent || "(sin contenido)",
-                        icon: message.author.avatar
-                            ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`
-                            : undefined,
-                        onClick: () => {
-                            // Opcional: ir al canal
-                            console.log("Notificación clickeada");
-                        },
-                    });
+                    // Reproducir sonido de notificación
+                    const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
+                    audio.volume = 0.5;
+                    audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
+
+                    // Solo mostrar notificación si Discord NO tiene el foco
+                    if (!document.hasFocus()) {
+                        const user = UserStore.getUser(message.author.id);
+                        const avatarUrl =
+                            user?.getAvatarURL(undefined, true, true) ||
+                            `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=96`;
+
+                        showNotification({
+                            title: `Mensaje de ${message.author.username}`,
+                            body: cleanContent || "(sin contenido)",
+                            icon: avatarUrl,
+                            onClick: () => {
+                                // Opcional: ir al canal
+                                console.log("Notificación clickeada");
+                            },
+                        });
+                    }
                 }
             } catch (error) {
                 console.error("Error:", error);
