@@ -76,6 +76,6 @@ export function ModalList(modalProps: any) {
 export const openBypassModal = () => {
     openModalLazy(async () => {
         await requireSettingsMenu();
-        return (modalProps) => <ModalList modalProps={modalProps}></ModalList>;
+        return (modalProps) => <ModalList {...modalProps}></ModalList>;
     });
 };
