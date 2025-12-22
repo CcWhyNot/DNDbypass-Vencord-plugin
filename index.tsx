@@ -74,27 +74,42 @@ const plugin = definePlugin({
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
 
-                    // Reproducir sonido de notificación
+                    const user = UserStore.getUser(message.author.id);
+                    const avatarUrl =
+                        user?.getAvatarURL(undefined, true, true) ||
+                        `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=96`;
+
+                    // Reproducir sonido de Discord siempre
                     const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
                     audio.volume = 0.5;
                     audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
 
-                    // Solo mostrar notificación si Discord NO tiene el foco
+                    // Solo mostrar notificación visual si Discord NO tiene el foco
                     if (!document.hasFocus()) {
-                        const user = UserStore.getUser(message.author.id);
-                        const avatarUrl =
-                            user?.getAvatarURL(undefined, true, true) ||
-                            `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.webp?size=96`;
-
-                        showNotification({
-                            title: `Mensaje de ${message.author.username}`,
-                            body: cleanContent || "(sin contenido)",
-                            icon: avatarUrl,
-                            onClick: () => {
-                                // Opcional: ir al canal
+                        // Usar API nativa con silent: true para evitar el sonido de Windows
+                        if (Notification.permission === "granted") {
+                            const n = new Notification(`Mensaje de ${message.author.username}`, {
+                                body: cleanContent || "(sin contenido)",
+                                icon: avatarUrl,
+                                silent: true,
+                            });
+                            n.onclick = () => {
                                 console.log("Notificación clickeada");
-                            },
-                        });
+                            };
+                        } else if (Notification.permission !== "denied") {
+                            Notification.requestPermission().then((permission) => {
+                                if (permission === "granted") {
+                                    const n = new Notification(`Mensaje de ${message.author.username}`, {
+                                        body: cleanContent || "(sin contenido)",
+                                        icon: avatarUrl,
+                                        silent: true,
+                                    });
+                                    n.onclick = () => {
+                                        console.log("Notificación clickeada");
+                                    };
+                                }
+                            });
+                        }
                     }
                 }
             } catch (error) {
