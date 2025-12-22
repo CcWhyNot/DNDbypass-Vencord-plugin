@@ -60,27 +60,6 @@ const plugin = definePlugin({
                 }
             },
         },
-        {
-            name: "bicarbo",
-            description: "Bicarbo",
-            options: [
-                {
-                    name: "url",
-                    description: "URL a compartir",
-                    type: 3, // STRING
-                    required: true,
-                },
-            ],
-            execute: async (args: any) => {
-                try {
-                    const url = args[0]?.value || "";
-                    return { content: `Bicarbo ayer fue mi cumpe: ${url}` };
-                } catch (error) {
-                    console.error("Error:", error);
-                    return { content: "Error" };
-                }
-            },
-        },
     ],
 
     startAt: StartAt.WebpackReady,
