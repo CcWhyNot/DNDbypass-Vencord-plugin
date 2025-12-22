@@ -17,7 +17,7 @@ Based on [Vencord](https://github.com/Vendicated/Vencord), which is also GPL-3.0
 - [ ] Max notifications simultaneously
 - [ ] Better UI / UX
 - [ ] Custom notifications
-- [ ] DND check
+- [x] DND check
 - [ ] Translate texts based on Discord's language settings.
 
 ## Installation
