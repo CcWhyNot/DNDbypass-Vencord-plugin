@@ -33,7 +33,6 @@ function createNotificationMenuItem(channelId: string, name: string) {
             )}
             {bypass && (
                 <>
-                    <Menu.MenuSeparator />
                     <Menu.MenuItem
                         id="notification-bypass-remove"
                         label="Remove"
