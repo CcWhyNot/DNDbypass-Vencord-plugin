@@ -1,0 +1,98 @@
+.vc-notifications-content {
+    display: grid;
+    justify-content: center;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    min-width: 900px;
+    width: 900px;
+}
+
+.vc-notifications-section {
+    color: white;
+    flex: auto;
+    font-size: 20px;
+}
+
+.vc-notifications-empty-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}
+
+.vc-notifications-users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.vc-notifications-user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem;
+    background-color: var(--background-secondary);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    gap: 1rem;
+}
+
+.vc-notifications-user-item:hover {
+    background-color: var(--background-secondary-alt);
+}
+
+.vc-notifications-user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.vc-notifications-user-name {
+    color: white;
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.vc-notifications-user-id {
+    color: var(--text-muted);
+    font-size: 0.813rem;
+    min-width: 120px;
+}
+
+.vc-notifications-user-status {
+    padding: 0.375rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.813rem;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.vc-notifications-user-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.vc-notifications-user-buttons button {
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+}
+
+.vc-notifications-user-status.vc-notifications-activated {
+    background-color: var(--green-360);
+    color: white;
+}
+
+.vc-notifications-user-status.vc-notifications-deactivated {
+    background-color: var(--primary-400);
+    color: var(--text-muted);
+}
