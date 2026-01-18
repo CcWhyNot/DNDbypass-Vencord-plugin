@@ -96,3 +96,59 @@
     background-color: var(--primary-400);
     color: var(--text-muted);
 }
+
+/* Input que parece texto normal */
+.vc-notifications-custom-name-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+    width: 120px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.vc-notifications-custom-name-input:hover {
+    border-bottom-color: var(--text-muted);
+}
+
+.vc-notifications-custom-name-input:focus {
+    border-bottom-color: var(--brand-500);
+}
+
+.vc-notifications-custom-name-input::placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Botón Eliminar - Rojo */
+.vc-notifications-btn-delete {
+    background-color: var(--red-430) !important;
+    color: white !important;
+}
+
+.vc-notifications-btn-delete:hover {
+    background-color: var(--red-500) !important;
+}
+
+/* Botón Desactivar/Activar - Amarillo */
+.vc-notifications-btn-toggle {
+    background-color: var(--yellow-300) !important;
+    color: black !important;
+}
+
+.vc-notifications-btn-toggle:hover {
+    background-color: var(--yellow-360) !important;
+}
+
+/* Botón Cambiar apodo - Azul/Brand */
+.vc-notifications-btn-rename {
+    background-color: var(--brand-500) !important;
+    color: white !important;
+}
+
+.vc-notifications-btn-rename:hover {
+    background-color: var(--brand-560) !important;
+}

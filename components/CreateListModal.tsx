@@ -34,7 +34,13 @@ function UserItem({
     return (
         <div className={cl("user-item")}>
             <div className={cl("user-info")}>
-                <input type="text" value={customName} onChange={(e) => setCustomName(e.target.value)} placeholder={user.name} />
+                <input
+                    type="text"
+                    className={cl("custom-name-input")}
+                    value={customName}
+                    onChange={(e) => setCustomName(e.target.value)}
+                    placeholder={user.name}
+                />
                 <Text variant="text-md/semibold" className={cl("user-name")}>
                     {user.name}
                 </Text>
@@ -43,9 +49,15 @@ function UserItem({
                 {user.activated ? "Activado" : "Desactivado"}
             </div>
             <div className={cl("user-buttons")}>
-                <Button onClick={() => onRemove(user.channel)}>Eliminar</Button>
-                <Button onClick={() => onAlterActivate(user.id)}>{user.activated ? "Desactivar" : "Activar"}</Button>
-                <Button onClick={() => onCustomName(user.id, customName)}>Cambiar apodo</Button>
+                <Button className={cl("btn-delete")} onClick={() => onRemove(user.channel)}>
+                    Eliminar
+                </Button>
+                <Button className={cl("btn-toggle")} onClick={() => onAlterActivate(user.id)}>
+                    {user.activated ? "Desactivar" : "Activar"}
+                </Button>
+                <Button className={cl("btn-rename")} onClick={() => onCustomName(user.id, customName)}>
+                    Cambiar apodo
+                </Button>
             </div>
         </div>
     );
