@@ -10,6 +10,7 @@ export interface User {
     id: string;
     channel: string;
     name: string;
+    customName: string;
     activated: boolean;
 }
 
@@ -35,6 +36,13 @@ export function shouldNotifyMessage(message: any, channelId: string) {
 
     // Comprueba bypass y activado
     return currentUser && isBypass(channelId) && isActived(channelId);
+}
+
+export function changeCustomName(id: string, newCustomName: string) {
+    let user = getUserById(id);
+    if (user != undefined) {
+        user.customName = newCustomName;
+    }
 }
 
 export function getUserByName(name: string) {
