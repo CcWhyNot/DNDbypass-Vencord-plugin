@@ -11,7 +11,7 @@ Based on [Vencord](https://github.com/Vendicated/Vencord), which is also GPL-3.0
 
 ## Working on
 
-- [ ] Custom names for groups and users in the list
+- [x] Custom names for groups and users in the list
 - [ ] Button to open the list
 - [ ] Custom sound for each user notification
 - [ ] Max notifications simultaneously
