@@ -5,6 +5,7 @@
  */
 
 import { ModalContent, ModalFooter, ModalHeader, ModalProps, ModalRoot, openModalLazy } from "@utils/modal";
+import { showToast, Toasts } from "@webpack/common";
 import { extractAndLoadChunksLazy } from "@webpack";
 import { Button, Text } from "@webpack/common";
 import { alterActivateUser, bypassLen, getAllUsers, removeUser, changeCustomName } from "../data";
@@ -27,7 +28,7 @@ function UserItem({
     user: { id: string; name: string; customName: string; channel: string; activated: boolean };
     onRemove: (channelId: string) => void;
     onAlterActivate: (userId: string) => void;
-    onCustomName: (userId: string, newCustomName: string) => void;
+    onCustomName: (userId: string, newCustomName: string, originalName: string) => void;
 }) {
     const [customName, setCustomName] = useState(user.customName);
 
@@ -55,7 +56,7 @@ function UserItem({
                 <Button className={cl("btn-toggle")} onClick={() => onAlterActivate(user.id)}>
                     {user.activated ? "Desactivar" : "Activar"}
                 </Button>
-                <Button className={cl("btn-rename")} onClick={() => onCustomName(user.id, customName)}>
+                <Button className={cl("btn-rename")} onClick={() => onCustomName(user.id, customName, user.name)}>
                     Cambiar apodo
                 </Button>
             </div>
@@ -78,8 +79,10 @@ export function ModalList(modalProps: any) {
         forceUpdater();
     };
 
-    const onCustomName = (userId: string, newCustomName: string) => {
+    const onCustomName = (userId: string, newCustomName: string, originalName: string) => {
         changeCustomName(userId, newCustomName);
+        const displayName = newCustomName || originalName;
+        showToast(`Apodo cambiado a "${displayName}"`, Toasts.Type.SUCCESS);
         forceUpdater();
     };
 
