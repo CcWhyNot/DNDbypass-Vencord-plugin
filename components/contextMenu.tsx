@@ -8,14 +8,13 @@ import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/Co
 import { Menu } from "@webpack/common";
 import { addUser, bypassLen, isBypass, removeUser, User } from "../data";
 import { logger } from "@components/settings/tabs/plugins";
-import { openBypassModal } from "./CreateListModal";
 
 function createNotificationMenuItem(channelId: string, name: string) {
     logger.info("Llego a la funcion");
     const bypass = isBypass(channelId);
 
     const handleAdd = () => {
-        const user: User = { id: "usuario-" + bypassLen(), channel: channelId, customName: name, name: name, activated: true };
+        const user: User = { id: "usuario-" + bypassLen(), channel: channelId, customName: "", name: name, activated: true };
         addUser(user);
     };
 
