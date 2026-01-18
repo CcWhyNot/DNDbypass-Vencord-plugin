@@ -28,7 +28,6 @@ function createNotificationMenuItem(channelId: string, name: string) {
             {!bypass && (
                 <>
                     <Menu.MenuItem id="notification-bypass-add" label="Add" action={handleAdd}></Menu.MenuItem>
-                    <Menu.MenuSeparator />
                 </>
             )}
             {bypass && (
