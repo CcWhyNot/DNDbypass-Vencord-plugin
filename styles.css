@@ -1,3 +1,46 @@
+/* Sidebar bypass button - outer wrapper mimics Discord's channel list item */
+.vc-notif-bypass-sidebar-btn {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    border-radius: 8px;
+    color: var(--interactive-normal, var(--channels-default, #949ba4));
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    padding: 0 12px 0 8px;
+    margin: 0 0 0 8px;
+    box-sizing: border-box;
+    gap: 12px;
+    position: relative;
+    user-select: none;
+}
+
+.vc-notif-bypass-sidebar-btn:hover {
+    background-color: var(--background-modifier-hover, rgba(79, 84, 92, 0.3));
+    color: var(--interactive-hover, #fff);
+}
+
+.vc-notif-bypass-sidebar-btn:hover svg {
+    fill: currentColor !important;
+}
+
+.vc-notif-bypass-sidebar-btn:active,
+.vc-notif-bypass-sidebar-btn:focus,
+.vc-notif-bypass-sidebar-btn:focus-visible {
+    color: var(--interactive-normal, var(--channels-default, #949ba4));
+    outline: none;
+}
+
+.vc-notif-bypass-sidebar-btn svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    fill: currentColor !important;
+    color: inherit !important;
+}
+
 .vc-notifications-content {
     display: grid;
     justify-content: center;

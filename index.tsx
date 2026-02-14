@@ -14,6 +14,7 @@
 // Escapar urls y esas cosas en los mensajes
 import "./styles.css";
 import { ApplicationCommandInputType } from "@api/Commands";
+import ErrorBoundary from "@components/ErrorBoundary";
 import { logger } from "@components/settings/tabs/plugins";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
 import { contextMenus } from "./components/contextMenu";
@@ -43,6 +44,28 @@ const plugin = definePlugin({
     contextMenus,
     settings,
     requireSettingsMenu,
+
+    patches: [
+        {
+            find: '.FRIENDS},"friends"',
+            replacement: {
+                match: /,"quests"\),/,
+                replace: ',"quests"),$self.renderBypassButton(),',
+            },
+        },
+    ],
+
+    renderBypassButton: ErrorBoundary.wrap(
+        () => (
+            <div className="vc-notif-bypass-sidebar-btn" onClick={() => openBypassModal()} role="button" tabIndex={0}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none">
+                    <path d="M12 2C10.34 2 9 3.34 9 5v.26C6.72 6.23 5 8.42 5 11v5l-2 2v1h18v-1l-2-2v-5c0-2.58-1.72-4.77-4-5.74V5c0-1.66-1.34-3-3-3zm0 20c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z" />
+                </svg>
+                <span>Bypass</span>
+            </div>
+        ),
+        { noop: true },
+    ),
 
     commands: [
         {
