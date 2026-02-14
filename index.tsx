@@ -22,7 +22,7 @@ import { init, shouldNotifyMessage, User } from "./data";
 import { requireSettingsMenu } from "./components/CreateListModal";
 import { openBypassModal } from "./components/CreateListModal";
 import { cleanMessage } from "./sanitize";
-import { showNotification } from "@api/Notifications";
+import { NavigationRouter } from "@webpack/common";
 
 export const settings = definePluginSettings({
     maxList: {
@@ -86,7 +86,8 @@ const plugin = definePlugin({
                                 silent: true,
                             });
                             n.onclick = () => {
-                                console.log("Notificación clickeada");
+                                window.focus();
+                                NavigationRouter.transitionTo(`/channels/@me/${message.channel_id}`);
                             };
                         } else if (Notification.permission !== "denied") {
                             Notification.requestPermission().then((permission) => {
@@ -96,7 +97,8 @@ const plugin = definePlugin({
                                         silent: true,
                                     });
                                     n.onclick = () => {
-                                        console.log("Notificación clickeada");
+                                        window.focus();
+                                        NavigationRouter.transitionTo(`/channels/@me/${message.channel_id}`);
                                     };
                                 }
                             });
