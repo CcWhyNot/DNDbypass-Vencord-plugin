@@ -3,7 +3,7 @@
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-import { settings } from "userplugins/customNotifications";
+import { settings } from ".";
 import { UserStore, PresenceStore } from "@webpack/common";
 
 export interface User {
