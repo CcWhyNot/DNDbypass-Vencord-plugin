@@ -22,7 +22,7 @@ import { definePluginSettings } from "@api/Settings";
 import { init, shouldNotifyMessage, User } from "./data";
 import { requireSettingsMenu } from "./components/CreateListModal";
 import { openBypassModal } from "./components/CreateListModal";
-import { cleanMessage } from "./sanitize";
+import { cleanMessage, sanitizeUsername } from "./sanitize";
 import { NavigationRouter } from "@webpack/common";
 
 export const settings = definePluginSettings({
@@ -100,6 +100,7 @@ const plugin = definePlugin({
 
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
+                    const cleanUsername = sanitizeUsername(message.author.username);
 
                     if (settings.store.playSound) {
                         const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
@@ -110,7 +111,7 @@ const plugin = definePlugin({
                     // Solo mostrar notificación visual si Discord NO tiene el foco y el usuario la tiene activada
                     if (!document.hasFocus() && settings.store.showPopupNotification) {
                         if (Notification.permission === "granted") {
-                            const n = new Notification(`Mensaje de ${message.author.username}`, {
+                            const n = new Notification(`Mensaje de ${cleanUsername}`, {
                                 body: cleanContent || "(sin contenido)",
                                 silent: true,
                             });
@@ -121,7 +122,7 @@ const plugin = definePlugin({
                         } else if (Notification.permission !== "denied") {
                             Notification.requestPermission().then((permission) => {
                                 if (permission === "granted") {
-                                    const n = new Notification(`Mensaje de ${message.author.username}`, {
+                                    const n = new Notification(`Mensaje de ${cleanUsername}`, {
                                         body: cleanContent || "(sin contenido)",
                                         silent: true,
                                     });

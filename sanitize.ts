@@ -1,16 +1,9 @@
 export function sanitizeMessage(text: string): string {
     if (!text) return "";
 
-    // Escapar HTML
-    const escaped = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#x27;");
-
     // Remover URLs maliciosas o limpiarlas
-    const sanitized = escaped.replace(/(https?:\/\/[^\s]+)/g, (url) => {
+    // (Sin escape HTML: la Notification nativa muestra texto plano y no lo interpreta)
+    const sanitized = text.replace(/(https?:\/\/[^\s]+)/g, (url) => {
         try {
             const urlObj = new URL(url);
             // Solo permitir http/https
@@ -47,4 +40,22 @@ export function cleanMessage(text: string): string {
     clean = removeCustomEmojis(clean);
     clean = sanitizeMessage(clean);
     return clean.trim();
+}
+
+const USERNAME_MAX_LENGTH = 32;
+
+// Caracteres de control y de override de dirección de escritura (usados para spoofing visual, p.ej. en nombres de webhooks)
+const UNSAFE_USERNAME_CHARS = new RegExp(
+    "[\\u0000-\\u001F\\u007F-\\u009F\\u200B-\\u200F\\u202A-\\u202E\\u2060-\\u206F]",
+    "g",
+);
+
+// Limpiar el nombre de autor (los webhooks pueden poner cualquier texto, sin las restricciones normales de username)
+export function sanitizeUsername(name: string): string {
+    if (!name) return "Desconocido";
+
+    const clean = name.replace(UNSAFE_USERNAME_CHARS, "").trim();
+    if (!clean) return "Desconocido";
+
+    return clean.length > USERNAME_MAX_LENGTH ? clean.substring(0, USERNAME_MAX_LENGTH) + "..." : clean;
 }
