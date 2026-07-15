@@ -47,8 +47,11 @@ export const settings = definePluginSettings({
     },
     notificationDuration: {
         type: OptionType.NUMBER,
-        description: "Segundos que quieres que dure el pop-up antes de cerrarse solo (solo se usa si \"Usar una duración personalizada\" está activado)",
+        description: "Segundos que quieres que dure el pop-up antes de cerrarse solo",
         default: 5,
+        hidden() {
+            return !this.store.useCustomDuration;
+        },
     },
 });
 
