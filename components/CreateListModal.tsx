@@ -47,20 +47,20 @@ function UserItem({
                 </Text>
             </div>
             <div className={cl("user-status", user.activated ? "activated" : "deactivated")}>
-                {user.activated ? "Activado" : "Desactivado"}
+                {user.activated ? "Activated" : "Deactivated"}
             </div>
             <div className={cl("user-buttons")}>
                 <Button className={cl("btn-delete")} onClick={() => onRemove(user.channel, user.customName || user.name)}>
-                    Eliminar
+                    Remove
                 </Button>
                 <Button
                     className={cl("btn-toggle")}
                     onClick={() => onAlterActivate(user.id, user.customName || user.name, user.activated)}
                 >
-                    {user.activated ? "Desactivar" : "Activar"}
+                    {user.activated ? "Deactivate" : "Activate"}
                 </Button>
                 <Button className={cl("btn-rename")} onClick={() => onCustomName(user.id, customName, user.name)}>
-                    Cambiar apodo
+                    Change nickname
                 </Button>
             </div>
         </div>
@@ -74,13 +74,13 @@ export function ModalList(modalProps: any) {
 
     const onRemove = (channelId: string, displayName: string) => {
         removeUser(channelId);
-        showToast(`"${displayName}" eliminado`, Toasts.Type.SUCCESS);
+        showToast(`"${displayName}" removed`, Toasts.Type.SUCCESS);
         forceUpdater();
     };
 
     const onAlterActivate = (userId: string, displayName: string, currentlyActivated: boolean) => {
         alterActivateUser(userId);
-        const status = currentlyActivated ? "desactivado" : "activado";
+        const status = currentlyActivated ? "deactivated" : "activated";
         showToast(`"${displayName}" ${status}`, Toasts.Type.SUCCESS);
         forceUpdater();
     };
@@ -88,20 +88,20 @@ export function ModalList(modalProps: any) {
     const onCustomName = (userId: string, newCustomName: string, originalName: string) => {
         changeCustomName(userId, newCustomName);
         const displayName = newCustomName || originalName;
-        showToast(`Apodo cambiado a "${displayName}"`, Toasts.Type.SUCCESS);
+        showToast(`Nickname changed to "${displayName}"`, Toasts.Type.SUCCESS);
         forceUpdater();
     };
 
     return (
         <ModalRoot {...modalProps} className={cl("content")}>
             <ModalHeader>
-                <Text variant="heading-lg/semibold">Lista de personas / grupos bypasseados</Text>
+                <Text variant="heading-lg/semibold">Bypassed people / groups list</Text>
             </ModalHeader>
 
             <ModalContent>
                 {empty === 0 ? (
                     <section className={cl("empty-message")}>
-                        <Text variant="text-md/normal">No tienes ninguno ahora mismo</Text>
+                        <Text variant="text-md/normal">You don't have any right now</Text>
                     </section>
                 ) : (
                     <section className={cl("users-list")}>

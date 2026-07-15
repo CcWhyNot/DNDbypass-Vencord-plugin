@@ -27,14 +27,14 @@ export function shouldNotifyMessage(message: any, channelId: string) {
     const currentUser = UserStore.getCurrentUser();
     if (!currentUser) return false;
 
-    // Comprobación de DND
+    // DND check
     const status = PresenceStore.getStatus(currentUser?.id);
     if (status !== "dnd") return false;
 
-    // No notificar si es tu propio mensaje
+    // Don't notify if it's your own message
     if (message.author?.id === currentUser?.id) return false;
 
-    // Comprueba bypass y activado
+    // Check bypass and activated
     return currentUser && isBypass(channelId) && isActived(channelId);
 }
 

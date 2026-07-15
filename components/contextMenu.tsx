@@ -10,11 +10,11 @@ import { addUser, bypassLen, isBypass, removeUser, User } from "../data";
 import { logger } from "@components/settings/tabs/plugins";
 
 function createNotificationMenuItem(channelId: string, name: string) {
-    logger.info("Llego a la funcion");
+    logger.info("Reached the function");
     const bypass = isBypass(channelId);
 
     const handleAdd = () => {
-        const user: User = { id: "usuario-" + bypassLen(), channel: channelId, customName: "", name: name, activated: true };
+        const user: User = { id: "user-" + bypassLen(), channel: channelId, customName: "", name: name, activated: true };
         addUser(user);
     };
 

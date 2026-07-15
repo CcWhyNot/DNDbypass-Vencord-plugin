@@ -166,7 +166,7 @@
     font-style: italic;
 }
 
-/* Botón Eliminar - Rojo */
+/* Remove button - Red */
 .vc-notifications-btn-delete {
     background-color: var(--red-430) !important;
     color: white !important;
@@ -176,7 +176,7 @@
     background-color: var(--red-500) !important;
 }
 
-/* Botón Desactivar/Activar - Amarillo */
+/* Deactivate/Activate button - Yellow */
 .vc-notifications-btn-toggle {
     background-color: var(--yellow-300) !important;
     color: black !important;
@@ -186,7 +186,7 @@
     background-color: var(--yellow-360) !important;
 }
 
-/* Botón Cambiar apodo - Azul/Brand */
+/* Change nickname button - Blue/Brand */
 .vc-notifications-btn-rename {
     background-color: var(--brand-500) !important;
     color: white !important;

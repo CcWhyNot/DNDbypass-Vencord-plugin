@@ -5,13 +5,13 @@
  */
 
 // TO DO
-// Comprobacion de menor que x personas - HECHO
-// Eliminar o desactivar a las personas desde la lista - HECHO
-// nombres personalizados a la hora de añadir o modificables - FEATURE
-// Las propias notificaciones
-// Boton para accesibilidad de la lista - DE MOMENTO COMANDO
-// Si quieren musica o no en notificaciones - HECHO
-// Escapar urls y esas cosas en los mensajes
+// Check for fewer than x people - DONE
+// Remove or deactivate people from the list - DONE
+// Custom names when adding or editable - FEATURE
+// Custom notifications
+// Button for list accessibility - COMMAND FOR NOW
+// Whether they want sound or not in notifications - DONE
+// Escape URLs and that kind of thing in messages - DONE
 import "./styles.css";
 import { ApplicationCommandInputType } from "@api/Commands";
 import ErrorBoundary from "@components/ErrorBoundary";
@@ -32,22 +32,22 @@ export const settings = definePluginSettings({
     },
     showPopupNotification: {
         type: OptionType.BOOLEAN,
-        description: "Mostrar la notificación emergente (pop-up) de Windows/Discord",
+        description: "Show the Windows/Discord popup notification",
         default: true,
     },
     playSound: {
         type: OptionType.BOOLEAN,
-        description: "Reproducir el sonido de notificación",
+        description: "Play the notification sound",
         default: true,
     },
     useCustomDuration: {
         type: OptionType.BOOLEAN,
-        description: "Usar una duración personalizada para el pop-up en vez de la del sistema",
+        description: "Use a custom duration for the popup instead of the system's",
         default: false,
     },
     notificationDuration: {
         type: OptionType.NUMBER,
-        description: "Segundos que quieres que dure el pop-up antes de cerrarse solo",
+        description: "Seconds you want the popup to last before it closes itself",
         default: 5,
         hidden() {
             return !this.store.useCustomDuration;
@@ -75,7 +75,7 @@ function createBypassNotification(title: string, body: string, channelId: string
 
 const plugin = definePlugin({
     name: "NotificationBypass",
-    description: "Permite recibir notificaciones de amigos específicos incluso en modo No Molestar",
+    description: "Allows you to receive notifications from specific friends even in Do Not Disturb mode",
     authors: [{ name: "Carlos Maria Casado Lopez", id: 585093668315332628n }],
     contextMenus,
     settings,
@@ -106,16 +106,16 @@ const plugin = definePlugin({
     commands: [
         {
             name: "bypass",
-            description: "Abre la lista de bypass",
+            description: "Opens the bypass list",
             inputType: ApplicationCommandInputType.BUILT_IN,
             execute: async () => {
                 try {
                     await requireSettingsMenu();
                     openBypassModal();
-                    return { content: "Lista de bypass abierta" };
+                    return { content: "Bypass list opened" };
                 } catch (error) {
-                    console.error("Error al abrir bypass modal:", error);
-                    return { content: "Error al abrir la lista" };
+                    console.error("Error opening bypass modal:", error);
+                    return { content: "Error opening the list" };
                 }
             },
         },
@@ -136,13 +136,13 @@ const plugin = definePlugin({
                     if (settings.store.playSound) {
                         const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
                         audio.volume = 0.5;
-                        audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
+                        audio.play().catch((err) => console.error("Error playing sound:", err));
                     }
 
-                    // Solo mostrar notificación visual si Discord NO tiene el foco y el usuario la tiene activada
+                    // Only show the visual notification if Discord does NOT have focus and the user has it enabled
                     if (!document.hasFocus() && settings.store.showPopupNotification) {
-                        const title = `Mensaje de ${cleanUsername}`;
-                        const body = cleanContent || "(sin contenido)";
+                        const title = `Message from ${cleanUsername}`;
+                        const body = cleanContent || "(no content)";
 
                         if (Notification.permission === "granted") {
                             createBypassNotification(title, body, message.channel_id);
@@ -162,7 +162,7 @@ const plugin = definePlugin({
         CONNECTION_OPEN: init,
     },
     stop() {
-        logger.info("Plugin detenido");
+        logger.info("Plugin stopped");
     },
 });
 

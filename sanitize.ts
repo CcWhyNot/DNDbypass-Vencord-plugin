@@ -1,39 +1,39 @@
 export function sanitizeMessage(text: string): string {
     if (!text) return "";
 
-    // Remover URLs maliciosas o limpiarlas
-    // (Sin escape HTML: la Notification nativa muestra texto plano y no lo interpreta)
+    // Remove or clean up malicious URLs
+    // (No HTML escaping: the native Notification shows plain text and doesn't parse it)
     const sanitized = text.replace(/(https?:\/\/[^\s]+)/g, (url) => {
         try {
             const urlObj = new URL(url);
-            // Solo permitir http/https
+            // Only allow http/https
             if (urlObj.protocol !== "http:" && urlObj.protocol !== "https:") {
-                return "[enlace removido]";
+                return "[link removed]";
             }
-            // Acortar URLs largas
+            // Shorten long URLs
             return url.length > 50 ? url.substring(0, 50) + "..." : url;
         } catch {
-            return "[enlace inválido]";
+            return "[invalid link]";
         }
     });
 
     return sanitized;
 }
 
-// Remover menciones peligrosas
+// Remove dangerous mentions
 export function removeMentions(text: string): string {
     return text
-        .replace(/<@!?(\d+)>/g, "@usuario") // Menciones de usuario
-        .replace(/<@&(\d+)>/g, "@rol") // Menciones de rol
-        .replace(/<#(\d+)>/g, "#canal"); // Menciones de canal
+        .replace(/<@!?(\d+)>/g, "@user") // User mentions
+        .replace(/<@&(\d+)>/g, "@role") // Role mentions
+        .replace(/<#(\d+)>/g, "#channel"); // Channel mentions
 }
 
-// Remover emojis personalizados (opcional)
+// Remove custom emojis (optional)
 export function removeCustomEmojis(text: string): string {
     return text.replace(/<a?:[a-zA-Z0-9_]+:\d+>/g, ":emoji:");
 }
 
-// Limpieza completa
+// Full cleanup
 export function cleanMessage(text: string): string {
     let clean = text;
     clean = removeMentions(clean);
@@ -44,18 +44,18 @@ export function cleanMessage(text: string): string {
 
 const USERNAME_MAX_LENGTH = 32;
 
-// Caracteres de control y de override de dirección de escritura (usados para spoofing visual, p.ej. en nombres de webhooks)
+// Control characters and writing-direction override characters (used for visual spoofing, e.g. in webhook names)
 const UNSAFE_USERNAME_CHARS = new RegExp(
     "[\\u0000-\\u001F\\u007F-\\u009F\\u200B-\\u200F\\u202A-\\u202E\\u2060-\\u206F]",
     "g",
 );
 
-// Limpiar el nombre de autor (los webhooks pueden poner cualquier texto, sin las restricciones normales de username)
+// Clean up the author's name (webhooks can set it to any text, without the normal username restrictions)
 export function sanitizeUsername(name: string): string {
-    if (!name) return "Desconocido";
+    if (!name) return "Unknown";
 
     const clean = name.replace(UNSAFE_USERNAME_CHARS, "").trim();
-    if (!clean) return "Desconocido";
+    if (!clean) return "Unknown";
 
     return clean.length > USERNAME_MAX_LENGTH ? clean.substring(0, USERNAME_MAX_LENGTH) + "..." : clean;
 }
