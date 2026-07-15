@@ -10,7 +10,7 @@
 // nombres personalizados a la hora de añadir o modificables - FEATURE
 // Las propias notificaciones
 // Boton para accesibilidad de la lista - DE MOMENTO COMANDO
-// Si quieren musica o no en notificaciones
+// Si quieren musica o no en notificaciones - HECHO
 // Escapar urls y esas cosas en los mensajes
 import "./styles.css";
 import { ApplicationCommandInputType } from "@api/Commands";
@@ -34,6 +34,16 @@ export const settings = definePluginSettings({
     userBasedBypassList: {
         type: OptionType.CUSTOM,
         default: {} as Record<string, User[]>,
+    },
+    showPopupNotification: {
+        type: OptionType.BOOLEAN,
+        description: "Mostrar la notificación emergente (pop-up) de Windows/Discord",
+        default: true,
+    },
+    playSound: {
+        type: OptionType.BOOLEAN,
+        description: "Reproducir el sonido de notificación",
+        default: true,
     },
 });
 
@@ -96,13 +106,14 @@ const plugin = definePlugin({
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
 
-                    // Reproducir sonido de Discord siempre
-                    const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
-                    audio.volume = 0.5;
-                    audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
+                    if (settings.store.playSound) {
+                        const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
+                        audio.volume = 0.5;
+                        audio.play().catch((err) => console.error("Error al reproducir sonido:", err));
+                    }
 
-                    // Solo mostrar notificación visual si Discord NO tiene el foco
-                    if (!document.hasFocus()) {
+                    // Solo mostrar notificación visual si Discord NO tiene el foco y el usuario la tiene activada
+                    if (!document.hasFocus() && settings.store.showPopupNotification) {
                         if (Notification.permission === "granted") {
                             const n = new Notification(`Mensaje de ${message.author.username}`, {
                                 body: cleanContent || "(sin contenido)",
