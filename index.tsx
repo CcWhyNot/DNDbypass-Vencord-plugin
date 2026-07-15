@@ -40,7 +40,35 @@ export const settings = definePluginSettings({
         description: "Reproducir el sonido de notificación",
         default: true,
     },
+    useCustomDuration: {
+        type: OptionType.BOOLEAN,
+        description: "Usar una duración personalizada para el pop-up en vez de la del sistema",
+        default: false,
+    },
+    notificationDuration: {
+        type: OptionType.NUMBER,
+        description: "Segundos que quieres que dure el pop-up antes de cerrarse solo (solo se usa si \"Usar una duración personalizada\" está activado)",
+        default: 5,
+    },
 });
+
+function createBypassNotification(title: string, body: string, channelId: string) {
+    const n = new Notification(title, {
+        body,
+        silent: true,
+    });
+    n.onclick = () => {
+        window.focus();
+        NavigationRouter.transitionTo(`/channels/@me/${channelId}`);
+    };
+
+    if (settings.store.useCustomDuration) {
+        const duration = Number(settings.store.notificationDuration);
+        if (Number.isFinite(duration) && duration > 0) {
+            setTimeout(() => n.close(), duration * 1000);
+        }
+    }
+}
 
 const plugin = definePlugin({
     name: "NotificationBypass",
@@ -110,26 +138,15 @@ const plugin = definePlugin({
 
                     // Solo mostrar notificación visual si Discord NO tiene el foco y el usuario la tiene activada
                     if (!document.hasFocus() && settings.store.showPopupNotification) {
+                        const title = `Mensaje de ${cleanUsername}`;
+                        const body = cleanContent || "(sin contenido)";
+
                         if (Notification.permission === "granted") {
-                            const n = new Notification(`Mensaje de ${cleanUsername}`, {
-                                body: cleanContent || "(sin contenido)",
-                                silent: true,
-                            });
-                            n.onclick = () => {
-                                window.focus();
-                                NavigationRouter.transitionTo(`/channels/@me/${message.channel_id}`);
-                            };
+                            createBypassNotification(title, body, message.channel_id);
                         } else if (Notification.permission !== "denied") {
                             Notification.requestPermission().then((permission) => {
                                 if (permission === "granted") {
-                                    const n = new Notification(`Mensaje de ${cleanUsername}`, {
-                                        body: cleanContent || "(sin contenido)",
-                                        silent: true,
-                                    });
-                                    n.onclick = () => {
-                                        window.focus();
-                                        NavigationRouter.transitionTo(`/channels/@me/${message.channel_id}`);
-                                    };
+                                    createBypassNotification(title, body, message.channel_id);
                                 }
                             });
                         }
