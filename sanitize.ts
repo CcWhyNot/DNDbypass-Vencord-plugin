@@ -1,3 +1,5 @@
+import { t } from "./i18n";
+
 export function sanitizeMessage(text: string): string {
     if (!text) return "";
 
@@ -8,12 +10,12 @@ export function sanitizeMessage(text: string): string {
             const urlObj = new URL(url);
             // Only allow http/https
             if (urlObj.protocol !== "http:" && urlObj.protocol !== "https:") {
-                return "[link removed]";
+                return t("sanitize.linkRemoved");
             }
             // Shorten long URLs
             return url.length > 50 ? url.substring(0, 50) + "..." : url;
         } catch {
-            return "[invalid link]";
+            return t("sanitize.linkInvalid");
         }
     });
 
@@ -52,10 +54,10 @@ const UNSAFE_USERNAME_CHARS = new RegExp(
 
 // Clean up the author's name (webhooks can set it to any text, without the normal username restrictions)
 export function sanitizeUsername(name: string): string {
-    if (!name) return "Unknown";
+    if (!name) return t("sanitize.unknownUser");
 
     const clean = name.replace(UNSAFE_USERNAME_CHARS, "").trim();
-    if (!clean) return "Unknown";
+    if (!clean) return t("sanitize.unknownUser");
 
     return clean.length > USERNAME_MAX_LENGTH ? clean.substring(0, USERNAME_MAX_LENGTH) + "..." : clean;
 }

@@ -9,6 +9,7 @@ import { showToast, Toasts } from "@webpack/common";
 import { extractAndLoadChunksLazy } from "@webpack";
 import { Button, Text } from "@webpack/common";
 import { alterActivateUser, bypassLen, getAllUsers, removeUser, changeCustomName } from "../data";
+import { t } from "../i18n";
 import { classNameFactory } from "@api/Styles";
 import { useForceUpdater } from "@utils/react";
 import { useState } from "@webpack/common";
@@ -47,20 +48,20 @@ function UserItem({
                 </Text>
             </div>
             <div className={cl("user-status", user.activated ? "activated" : "deactivated")}>
-                {user.activated ? "Activated" : "Deactivated"}
+                {user.activated ? t("status.activated") : t("status.deactivated")}
             </div>
             <div className={cl("user-buttons")}>
                 <Button className={cl("btn-delete")} onClick={() => onRemove(user.channel, user.customName || user.name)}>
-                    Remove
+                    {t("button.remove")}
                 </Button>
                 <Button
                     className={cl("btn-toggle")}
                     onClick={() => onAlterActivate(user.id, user.customName || user.name, user.activated)}
                 >
-                    {user.activated ? "Deactivate" : "Activate"}
+                    {user.activated ? t("button.deactivate") : t("button.activate")}
                 </Button>
                 <Button className={cl("btn-rename")} onClick={() => onCustomName(user.id, customName, user.name)}>
-                    Change nickname
+                    {t("button.rename")}
                 </Button>
             </div>
         </div>
@@ -74,34 +75,38 @@ export function ModalList(modalProps: any) {
 
     const onRemove = (channelId: string, displayName: string) => {
         removeUser(channelId);
-        showToast(`"${displayName}" removed`, Toasts.Type.SUCCESS);
+        showToast(t("toast.removed", { name: displayName }), Toasts.Type.SUCCESS);
         forceUpdater();
     };
 
     const onAlterActivate = (userId: string, displayName: string, currentlyActivated: boolean) => {
         alterActivateUser(userId);
-        const status = currentlyActivated ? "deactivated" : "activated";
-        showToast(`"${displayName}" ${status}`, Toasts.Type.SUCCESS);
+        showToast(
+            currentlyActivated
+                ? t("toast.deactivated", { name: displayName })
+                : t("toast.activated", { name: displayName }),
+            Toasts.Type.SUCCESS,
+        );
         forceUpdater();
     };
 
     const onCustomName = (userId: string, newCustomName: string, originalName: string) => {
         changeCustomName(userId, newCustomName);
         const displayName = newCustomName || originalName;
-        showToast(`Nickname changed to "${displayName}"`, Toasts.Type.SUCCESS);
+        showToast(t("toast.renamed", { name: displayName }), Toasts.Type.SUCCESS);
         forceUpdater();
     };
 
     return (
         <ModalRoot {...modalProps} className={cl("content")}>
             <ModalHeader>
-                <Text variant="heading-lg/semibold">Bypassed people / groups list</Text>
+                <Text variant="heading-lg/semibold">{t("modal.title")}</Text>
             </ModalHeader>
 
             <ModalContent>
                 {empty === 0 ? (
                     <section className={cl("empty-message")}>
-                        <Text variant="text-md/normal">You don't have any right now</Text>
+                        <Text variant="text-md/normal">{t("modal.empty")}</Text>
                     </section>
                 ) : (
                     <section className={cl("users-list")}>

@@ -7,6 +7,7 @@
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { Menu } from "@webpack/common";
 import { addUser, bypassLen, isBypass, removeUser, User } from "../data";
+import { t } from "../i18n";
 import { logger } from "@components/settings/tabs/plugins";
 
 function createNotificationMenuItem(channelId: string, name: string) {
@@ -23,17 +24,17 @@ function createNotificationMenuItem(channelId: string, name: string) {
     };
 
     return (
-        <Menu.MenuItem id="notification-bypass" label="Bypass">
+        <Menu.MenuItem id="notification-bypass" label={t("menu.bypass")}>
             {!bypass && (
                 <>
-                    <Menu.MenuItem id="notification-bypass-add" label="Add" action={handleAdd}></Menu.MenuItem>
+                    <Menu.MenuItem id="notification-bypass-add" label={t("menu.add")} action={handleAdd}></Menu.MenuItem>
                 </>
             )}
             {bypass && (
                 <>
                     <Menu.MenuItem
                         id="notification-bypass-remove"
-                        label="Remove"
+                        label={t("menu.remove")}
                         color="danger"
                         action={handleRemove}
                     ></Menu.MenuItem>

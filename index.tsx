@@ -23,6 +23,7 @@ import { init, shouldNotifyMessage, User } from "./data";
 import { requireSettingsMenu } from "./components/CreateListModal";
 import { openBypassModal } from "./components/CreateListModal";
 import { cleanMessage, sanitizeUsername } from "./sanitize";
+import { t } from "./i18n";
 import { NavigationRouter } from "@webpack/common";
 
 export const settings = definePluginSettings({
@@ -32,22 +33,22 @@ export const settings = definePluginSettings({
     },
     showPopupNotification: {
         type: OptionType.BOOLEAN,
-        description: "Show the Windows/Discord popup notification",
+        description: t("settings.showPopupNotification"),
         default: true,
     },
     playSound: {
         type: OptionType.BOOLEAN,
-        description: "Play the notification sound",
+        description: t("settings.playSound"),
         default: true,
     },
     useCustomDuration: {
         type: OptionType.BOOLEAN,
-        description: "Use a custom duration for the popup instead of the system's",
+        description: t("settings.useCustomDuration"),
         default: false,
     },
     notificationDuration: {
         type: OptionType.NUMBER,
-        description: "Seconds you want the popup to last before it closes itself",
+        description: t("settings.notificationDuration"),
         default: 5,
         hidden() {
             return !this.store.useCustomDuration;
@@ -75,7 +76,7 @@ function createBypassNotification(title: string, body: string, channelId: string
 
 const plugin = definePlugin({
     name: "NotificationBypass",
-    description: "Allows you to receive notifications from specific friends even in Do Not Disturb mode",
+    description: t("plugin.description"),
     authors: [{ name: "Carlos Maria Casado Lopez", id: 585093668315332628n }],
     contextMenus,
     settings,
@@ -97,7 +98,7 @@ const plugin = definePlugin({
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none">
                     <path d="M12 2C10.34 2 9 3.34 9 5v.26C6.72 6.23 5 8.42 5 11v5l-2 2v1h18v-1l-2-2v-5c0-2.58-1.72-4.77-4-5.74V5c0-1.66-1.34-3-3-3zm0 20c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z" />
                 </svg>
-                <span>Bypass</span>
+                <span>{t("sidebar.bypass")}</span>
             </div>
         ),
         { noop: true },
@@ -106,16 +107,16 @@ const plugin = definePlugin({
     commands: [
         {
             name: "bypass",
-            description: "Opens the bypass list",
+            description: t("command.description"),
             inputType: ApplicationCommandInputType.BUILT_IN,
             execute: async () => {
                 try {
                     await requireSettingsMenu();
                     openBypassModal();
-                    return { content: "Bypass list opened" };
+                    return { content: t("command.opened") };
                 } catch (error) {
                     console.error("Error opening bypass modal:", error);
-                    return { content: "Error opening the list" };
+                    return { content: t("command.errorOpening") };
                 }
             },
         },
@@ -141,8 +142,8 @@ const plugin = definePlugin({
 
                     // Only show the visual notification if Discord does NOT have focus and the user has it enabled
                     if (!document.hasFocus() && settings.store.showPopupNotification) {
-                        const title = `Message from ${cleanUsername}`;
-                        const body = cleanContent || "(no content)";
+                        const title = t("notification.messageFrom", { name: cleanUsername });
+                        const body = cleanContent || t("notification.noContent");
 
                         if (Notification.permission === "granted") {
                             createBypassNotification(title, body, message.channel_id);
