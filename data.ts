@@ -54,7 +54,6 @@ export function getUserById(id: string) {
 }
 
 export function addUser(user: User) {
-    if (bypassLen() >= settings.store.maxList) return;
     currentUserBypassUsers.push(user);
 }
 

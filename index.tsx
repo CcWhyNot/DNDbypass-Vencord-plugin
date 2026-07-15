@@ -26,11 +26,6 @@ import { cleanMessage } from "./sanitize";
 import { NavigationRouter } from "@webpack/common";
 
 export const settings = definePluginSettings({
-    maxList: {
-        type: OptionType.NUMBER,
-        description: "¿Cuánta gente puedes tener bypasseada en total",
-        default: 10,
-    },
     userBasedBypassList: {
         type: OptionType.CUSTOM,
         default: {} as Record<string, User[]>,
