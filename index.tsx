@@ -100,7 +100,7 @@ const plugin = definePlugin({
 
                 if (shouldNotifyMessage(message, message.channel_id)) {
                     const cleanContent = cleanMessage(message.content || "");
-                    const cleanUsername = sanitizeUsername(message.author.username);
+                    const cleanUsername = sanitizeUsername(message.author.globalName || message.author.username);
 
                     if (settings.store.playSound) {
                         const audio = new Audio("https://discord.com/assets/dd920c06a01e5bb8b09678581e29d56f.mp3");
